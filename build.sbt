@@ -1,5 +1,6 @@
+import AssemblyKeys._
 
-val scalaVersionStr   = "2.10.5"
+val scalaVersionStr   = "2.10.3"
 val akkaVersion       = "2.3.9"
 val sprayVersion      = "1.3.2"
 
@@ -16,13 +17,9 @@ ivyScala              := ivyScala.value map { _.copy(overrideScalaVersion = true
 autoCompilerPlugins   := true
 
 resolvers ++= Seq(
-  "Local Maven Repository" at "file:///"+Path.userHome.absolutePath+".m2/repository/",
-  "maven remote" at "http://mvnrepository.com/artifact/",
-  "spray repo" at "http://repo.spray.io/",
-  "json4s repo" at "http://repo.scala-sbt.org/scalasbt/repo/",
-  "scalaz repo" at "https://github.com/scalaz/scalaz.git",
-  "basex repo" at "http://files.basex.org/maven/",
-  "basex-xqj repo" at "http://xqj.net/maven/"
+  "maven local repo" at "file:///"+Path.userHome.absolutePath+".m2/repository/",
+  "maven remote repo" at "http://mvnrepository.com/artifact/",
+  "spray repo" at "http://repo.spray.io/"
 )
 
 val commonDependencies: Seq[ModuleID] = Seq(
@@ -93,3 +90,15 @@ lazy val specialk = project.in(file("specialk"))
 publishTo             := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))
 
 mainClass in (Compile, run) := Some("com.biosimilarity.evaluator.spray.Boot")
+
+sbtassembly.Plugin.assemblySettings
+
+test in assembly := {}
+
+mergeStrategy in assembly := {
+  case PathList("eval.conf") => MergeStrategy.concat
+  case PathList("eval.client.conf") => MergeStrategy.concat
+  case PathList("eval.dev.client.conf") => MergeStrategy.concat
+  case PathList("eval.dev.server.conf") => MergeStrategy.concat
+  case PathList("eval.dev.conf") => MergeStrategy.concat
+}
