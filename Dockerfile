@@ -3,8 +3,15 @@ FROM ubuntu:trusty
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV SCALA_VERSION 2.10.5
+ENV SCALA_FILENAME scala-$SCALA_VERSION.deb
+ENV SCALA_DEBPATH http://downloads.typesafe.com/scala/$SCALA_VERSION/$SCALA_FILENAME
+
+ENV SBT_VERSION 0.13.8
+ENV SBT_JAR https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/$SBT_VERSION/sbt-launch.jar
+
 # Configure apt to make Oracle Java and Google Chrome available, update, upgrade, and install packages
-RUN apt-get -y install \
+RUN apt-get -q update && apt-get -q -y install \
         software-properties-common \
         wget && \
     add-apt-repository ppa:webupd8team/java && \
@@ -16,9 +23,9 @@ RUN apt-get -y install \
     apt-get -y -q install \
         git \
         google-chrome-beta \
+		mc \
         lxterminal \
-        maven \
-        vim && \
+        maven && \
     apt-get clean && \
     ln -s /usr/bin/vim /usr/bin/emacs
 
@@ -30,19 +37,23 @@ RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true 
     apt-get clean && \
     update-java-alternatives -s java-8-oracle
 	
-# Install scala 2.10.4 and sbt
-RUN apt-get remove scala-library scala \
-    wget www.scala-lang.org/files/archive/scala-2.10.4.deb \
-    dpkg -i scala-2.10.4.deb \
-    apt-get update \
-    apt-get install scala \
-    wget http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/0.12.4/sbt.deb \
-    dpkg -i sbt.deb \
-    apt-get update \
-    apt-get install sbt
+# Install scala
+RUN apt-get install -y libjansi-java
+RUN wget -q $SCALA_DEBPATH
+RUN dpkg -i $SCALA_FILENAME
+RUN rm -f $SCALA_FILENAME
+
+# Install SBT manually
+ADD $SBT_JAR /usr/bin/sbt-launch.jar
+COPY sbt.sh /usr/bin/sbt
+RUN chmod u+x /usr/bin/sbt
+
+#RUN echo "==> Fetching all sbt jars from Maven repo" && \
+   #echo "==> This will take a while..." && \
+   #sbt
 
 # Install IntelliJ IDEA
-RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.tar.gz -O /tmp/intellij.tar.gz -q && \
+RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp/intellij.tar.gz -q && \
     mkdir -p /opt/intellij && \
     tar -xf /tmp/intellij.tar.gz --strip-components=1 -C /opt/intellij && \
     rm /tmp/intellij.tar.gz
@@ -51,15 +62,15 @@ RUN wget http://download.jetbrains.com/idea/ideaIC-14.1.tar.gz -O /tmp/intellij.
 COPY idea.sh /usr/bin/idea
 COPY chrome.sh /usr/bin/chrome
 
-# Create "dev" user with "dev" password and grant passwordless sudo permission
-ENV USERNAME dev
-RUN adduser --disabled-password --gecos '' $USERNAME && \
-    echo dev:dev | chpasswd && \
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    sudo adduser dev sudo
-	
 # Mark dev user home as data volume
-VOLUME /home/dev	
+VOLUME /home/synereo
+
+# Create "synereo" user with "synereo" password and grant passwordless sudo permission
+ENV USERNAME=synereo
+RUN adduser --disabled-password --gecos '' $USERNAME && \
+    echo synereo:synereo | chpasswd && \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    sudo adduser $USERNAME sudo
 
 # Start an X terminal as dev user
 USER $USERNAME
