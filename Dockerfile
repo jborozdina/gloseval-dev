@@ -66,14 +66,14 @@ RUN chmod u+x /usr/bin/chrome
 
 
 # Mark dev user home as data volume
-VOLUME /home/synereo
+VOLUME /home/$USERNAME
 
-# Create "synereo" user with "synereo" password and grant passwordless sudo permission
-ENV USERNAME synereo
+# Create "dev" user with "dev" password and grant passwordless sudo permission
+ENV USERNAME dev
 RUN adduser --disabled-password --gecos '' $USERNAME && \
-    echo synereo:synereo | chpasswd && \
+    echo dev:dev | chpasswd && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    sudo adduser $USERNAME sudo
+    sudo adduser dev sudo
 
 # Start an X terminal as dev user
 USER $USERNAME
