@@ -61,9 +61,6 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
 # Convenience scripts
 COPY idea.sh /usr/bin/idea
 COPY chrome.sh /usr/bin/chrome
-RUN chmod u+x /usr/bin/idea
-RUN chmod u+x /usr/bin/chrome
-
 
 # Mark dev user home as data volume
 VOLUME /home/$USERNAME
@@ -78,4 +75,6 @@ RUN adduser --disabled-password --gecos '' $USERNAME && \
 # Start an X terminal as dev user
 USER $USERNAME
 WORKDIR /home/$USERNAME
+RUN sudo chmod +x /usr/bin/idea
+RUN sudo chmod +x /usr/bin/chrome
 ENTRYPOINT lxterminal
