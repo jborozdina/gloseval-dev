@@ -62,13 +62,19 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
 COPY idea.sh /usr/bin/idea
 COPY chrome.sh /usr/bin/chrome
 
-RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/synereo && \
-    echo "synereo:x:${uid}:${gid}:synereo,,,:/home/synereo:/bin/bash" >> /etc/passwd && \
-    echo "synereo:x:${uid}:" >> /etc/group && \
-    echo "synereo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/synereo && \
-    chmod 0440 /etc/sudoers.d/synereo && \
-    chown ${uid}:${gid} -R /home/synereo
-USER synereo
-ENV HOME /home/synereo
+# Mark dev user home as data volume
+VOLUME /home/synereo
+
+# Create "synereo" user with "synereo" password and grant passwordless sudo permission
+ENV USERNAME=synereo
+RUN adduser --disabled-password --gecos '' $USERNAME && \
+    echo synereo:synereo | chpasswd && \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    sudo adduser $USERNAME sudo
+RUN chmod u+x /usr/bin/idea
+RUN chmod u+x /usr/bin/chrome
+
+# Start an X terminal as dev user
+USER $USERNAME
+WORKDIR /home/$USERNAME
 ENTRYPOINT lxterminal
