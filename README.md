@@ -10,7 +10,7 @@ Scala 2.10.5
 SBT 0.13.8
 Maven
 Git
-IntelliJ IDEA 15.1 Community Edition
+IntelliJ IDEA 15.0.4 Community Edition
 Google Chrome
 Mongo DB instance
 
@@ -25,7 +25,7 @@ Starting
 Ensure X client is running.
 Run "Boot2Docker Start" - this will open a Boot2Docker console.
 Run the following command in the Boot2Docker console, substituting <DISPLAY> and <USERNAME>:
-docker run -d -e DISPLAY=<DISPLAY> -v /c/Users/<USERNAME>/Docker-IntelliJ:/home/dev -name ide jborozdina/gloseval-dev
+docker run -d -e DISPLAY=<DISPLAY> -v /c/Users/<USERNAME>/Docker-IntelliJ:/home/dev --name ide jborozdina/gloseval-dev
 <DISPLAY> is the X client display address. Typically this will be your workstation IP address plus ":0.0".
 <USERNAME> is your Windows username. This path is used to persist the VM "dev" users home directory between
 restarts.
