@@ -11,9 +11,6 @@ SBT 0.13.8
 Maven
 Git
 IntelliJ IDEA 15.0.4 Community Edition
-Google Chrome
-Mongo DB instance
-
 
 Running from Windows
 Initial setup
@@ -24,10 +21,9 @@ is disabled - this is the default on MobaXTerm, but eg XMing needs to be run wit
 Starting
 Ensure X client is running.
 Run "Boot2Docker Start" - this will open a Boot2Docker console.
-Run the following command in the Boot2Docker console, substituting <DISPLAY> and <USERNAME>:
-docker run -d -e DISPLAY=<DISPLAY> -v /c/Users/<USERNAME>/Docker-IntelliJ:/home/dev --name ide jborozdina/gloseval-dev
+Run the following command in the Boot2Docker console, substituting <DISPLAY>:
+docker run -d -e DISPLAY=<DISPLAY> -v ~/docker/intellij:/home/dev --name ide jborozdina/gloseval-dev
 <DISPLAY> is the X client display address. Typically this will be your workstation IP address plus ":0.0".
 <USERNAME> is your Windows username. This path is used to persist the VM "dev" users home directory between
 restarts.
-A terminal window should open on your desktop from the VM. To start IntelliJ IDEA, run "idea". 
-To start Google Chrome, run "chrome".
+A terminal window should open on your desktop from the VM. To start IntelliJ IDEA, run "sudo idea".

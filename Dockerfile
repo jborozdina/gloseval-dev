@@ -58,25 +58,7 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
     tar -xf /tmp/intellij.tar.gz --strip-components=1 -C /opt/intellij && \
     rm /tmp/intellij.tar.gz
 
-# Convenience scripts
 COPY idea.sh /usr/bin/idea
-COPY chrome.sh /usr/bin/chrome
-
-# Installation:
-# Import MongoDB public GPG key AND create a MongoDB list file
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-RUN echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-# Update apt-get sources AND install MongoDB
-RUN apt-get update && apt-get install -y mongodb-org
-
-# Create the MongoDB data directory
-RUN mkdir -p /data/db
-
-# Expose port #27017 from the container to the host
-EXPOSE 27017
-
-# Mark dev user home as data volume
-VOLUME /home/$USERNAME
 
 # Create "dev" user with "dev" password and grant passwordless sudo permission
 ENV USERNAME dev

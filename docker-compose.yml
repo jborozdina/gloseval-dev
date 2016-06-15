@@ -1,0 +1,14 @@
+mdb1:
+  image: mongo
+  ports:
+    - 27017:27017
+  volumes:
+    - ~/docker/mongodb:/var/lib/mongodb
+  restart: always
+  
+ide:
+  image: jborozdina/gloseval-dev
+  environment: 
+    - DISPLAY=192.168.88.58:0.0
+  volumes:
+    - ~/docker/intellij:/home/dev
