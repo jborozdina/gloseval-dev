@@ -62,6 +62,19 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
 COPY idea.sh /usr/bin/idea
 COPY chrome.sh /usr/bin/chrome
 
+# Installation:
+# Import MongoDB public GPG key AND create a MongoDB list file
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+RUN echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+# Update apt-get sources AND install MongoDB
+RUN apt-get update && apt-get install -y mongodb-org
+
+# Create the MongoDB data directory
+RUN mkdir -p /data/db
+
+# Expose port #27017 from the container to the host
+EXPOSE 27017
+
 # Mark dev user home as data volume
 VOLUME /home/$USERNAME
 
@@ -75,6 +88,4 @@ RUN adduser --disabled-password --gecos '' $USERNAME && \
 # Start an X terminal as dev user
 USER $USERNAME
 WORKDIR /home/$USERNAME
-RUN sudo chmod +x /usr/bin/idea
-RUN sudo chmod +x /usr/bin/chrome
 ENTRYPOINT lxterminal
