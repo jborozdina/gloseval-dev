@@ -60,7 +60,8 @@ RUN echo 'Creating user: dev' && \
     sudo chmod 0440 /etc/sudoers.d/dev && \
     sudo chown dev:dev -R /home/dev && \
     sudo chown root:root /usr/bin/sudo && \
-chmod 4755 /usr/bin/sudo   
+chmod 4755 /usr/bin/sudo 
+  
 
 # Install IntelliJ IDEA
 RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp/intellij.tar.gz -q && \
