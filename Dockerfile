@@ -46,7 +46,7 @@ RUN rm -f $SCALA_FILENAME
 # Install SBT manually
 ADD $SBT_JAR /usr/bin/sbt-launch.jar
 COPY sbt.sh /usr/bin/sbt
-RUN chmod u+x /usr/bin/sbt
+RUN chmod ugo+rwx /usr/bin/sbt
 
 #RUN echo "==> Fetching all sbt jars from Maven repo" && \
    #echo "==> This will take a while..." && \
@@ -58,16 +58,15 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
     tar -xf /tmp/intellij.tar.gz --strip-components=1 -C /opt/intellij && \
     rm /tmp/intellij.tar.gz
 
+COPY idea.sh /usr/bin/idea
+RUN chmod ugo+rwx /usr/bin/idea
 
 # Create "dev" user with "dev" password and grant passwordless sudo permission
 ENV USERNAME dev
 RUN adduser --disabled-password --gecos '' $USERNAME && \
     echo dev:dev | chpasswd && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    sudo adduser dev sudo
-
-COPY idea.sh /usr/bin/idea
-RUN chmod u+x /usr/bin/idea	
+    sudo adduser dev sudo	
 
 # Start an X terminal as dev user
 USER $USERNAME
