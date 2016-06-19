@@ -59,7 +59,7 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
     rm /tmp/intellij.tar.gz
 
 COPY idea.sh /usr/bin/idea
-RUN chmod ugo+rwx /usr/bin/idea
+RUN sudo chmod 4777 /usr/bin/idea
 
 # Create "dev" user with "dev" password and grant passwordless sudo permission
 ENV USERNAME dev
