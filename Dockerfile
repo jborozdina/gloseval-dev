@@ -48,9 +48,19 @@ ADD $SBT_JAR /usr/bin/sbt-launch.jar
 COPY sbt.sh /usr/bin/sbt
 RUN chmod ugo+rwx /usr/bin/sbt
 
-#RUN echo "==> Fetching all sbt jars from Maven repo" && \
-   #echo "==> This will take a while..." && \
-   #sbt
+RUN echo "==> Fetching all sbt jars from Maven repo" && \
+   echo "==> This will take a while..." && \
+   sbt
+   
+RUN echo 'Creating user: dev' && \
+    mkdir -p /home/dev && \
+    echo "dev:x:1000:1000:Dev,,,:/home/dev:/bin/bash" >> /etc/passwd && \
+    echo "dev:x:1000:" >> /etc/group && \
+    sudo echo "dev ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/dev && \
+    sudo chmod 0440 /etc/sudoers.d/dev && \
+    sudo chown dev:dev -R /home/dev && \
+    sudo chown root:root /usr/bin/sudo && \
+chmod 4755 /usr/bin/sudo   
 
 # Install IntelliJ IDEA
 RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp/intellij.tar.gz -q && \
@@ -61,14 +71,7 @@ RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp
 COPY idea.sh /usr/bin/idea
 RUN sudo chmod 4777 /usr/bin/idea
 
-# Create "dev" user with "dev" password and grant passwordless sudo permission
-ENV USERNAME dev
-RUN adduser --disabled-password --gecos '' $USERNAME && \
-    echo dev:dev | chpasswd && \
-    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    sudo adduser dev sudo	
-
 # Start an X terminal as dev user
-USER $USERNAME
-WORKDIR /home/$USERNAME
+USER dev
+WORKDIR /home/dev
 ENTRYPOINT lxterminal

@@ -1,5 +1,8 @@
-#!/bin/bash
-#
-# Start IDEA with all output redirected
+#!/usr/bin/env bash
 
-/opt/intellij/bin/idea.sh &> /tmp/idea.log &
+if [ -d /home/dev/.IdeaIC15 ]; then
+    # Ensure proper permissions
+    sudo chown dev:dev -R /home/dev/.IdeaIC15
+fi
+
+exec /opt/intellij/bin/idea.sh
