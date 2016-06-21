@@ -11,4 +11,4 @@ ide:
   environment: 
     - DISPLAY=192.168.88.58:0.0
   volumes:
-    - ~/docker/intellij:/home/dev
+    - ~/docker/intellij:/home/dev/share
