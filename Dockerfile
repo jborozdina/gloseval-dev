@@ -54,9 +54,9 @@ RUN echo 'Creating user: dev' && \
 chmod 4755 /usr/bin/sudo
 
 # Install SBT manually
-ADD $SBT_JAR ~/bin/sbt-launch.jar
-COPY sbt.sh ~/bin/sbt
-RUN chmod ugo+rwx ~/bin/sbt
+ADD $SBT_JAR /home/dev/bin/sbt-launch.jar
+COPY sbt.sh /home/dev/bin/sbt
+RUN chmod ugo+rwx /home/dev/bin/sbt
 
 RUN echo "==> Fetching all sbt jars from Maven repo" && \
    echo "==> This will take a while..." && \
