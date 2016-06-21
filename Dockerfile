@@ -42,16 +42,7 @@ RUN apt-get install -y libjansi-java
 RUN wget -q $SCALA_DEBPATH
 RUN dpkg -i $SCALA_FILENAME
 RUN rm -f $SCALA_FILENAME
-
-# Install SBT manually
-ADD $SBT_JAR /usr/bin/sbt-launch.jar
-COPY sbt.sh /usr/bin/sbt
-RUN chmod ugo+rwx /usr/bin/sbt
-
-RUN echo "==> Fetching all sbt jars from Maven repo" && \
-   echo "==> This will take a while..." && \
-   sbt
-   
+	
 RUN echo 'Creating user: dev' && \
     mkdir -p /home/dev && \
     echo "dev:x:1000:1000:Dev,,,:/home/dev:/bin/bash" >> /etc/passwd && \
@@ -60,8 +51,16 @@ RUN echo 'Creating user: dev' && \
     sudo chmod 0440 /etc/sudoers.d/dev && \
     sudo chown dev:dev -R /home/dev && \
     sudo chown root:root /usr/bin/sudo && \
-chmod 4755 /usr/bin/sudo 
-  
+chmod 4755 /usr/bin/sudo
+
+# Install SBT manually
+ADD $SBT_JAR ~/bin/sbt-launch.jar
+COPY sbt.sh ~/bin/sbt
+RUN chmod ugo+rwx ~/bin/sbt
+
+RUN echo "==> Fetching all sbt jars from Maven repo" && \
+   echo "==> This will take a while..." && \
+   sbt     
 
 # Install IntelliJ IDEA
 RUN wget https://d1opms6zj7jotq.cloudfront.net/idea/ideaIC-15.0.4.tar.gz -O /tmp/intellij.tar.gz -q && \
