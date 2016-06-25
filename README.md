@@ -27,3 +27,11 @@ docker run -d -e DISPLAY=<DISPLAY> -v ~/docker/intellij:/home/dev --name ide jbo
 <USERNAME> is your Windows username. This path is used to persist the VM "dev" users home directory between
 restarts.
 A terminal window should open on your desktop from the VM. To start IntelliJ IDEA, run "sudo idea".
+
+Getting started 
+
+1. Install and run Docker Toolbox (https://www.docker.com/products/docker-toolbox)
+2. Install and run an X client (such as MobaXTerm(http://mobaxterm.mobatek.net/download.html) for Windows / MacTerm(http://macdownload.informer.com/macterm/) for MacOS)
+   NB ensure that the X client access control is disabled - this is the default on MobaXTerm, but eg XMing needs to be run with the -ac option.
+3. Add memory for Docker VM   
+

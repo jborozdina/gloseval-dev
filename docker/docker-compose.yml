@@ -9,6 +9,8 @@ mdb1:
 ide:
   image: jborozdina/gloseval-dev
   environment: 
-    - DISPLAY=
+    - DISPLAY=192.168.88.58:0.0
+  ports:
+    - 9876:9876
   volumes:
     - ~/docker/intellij:/home/dev/share

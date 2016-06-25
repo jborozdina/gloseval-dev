@@ -15,15 +15,12 @@ RUN apt-get -q update && apt-get -q -y install \
         software-properties-common \
         wget && \
     add-apt-repository ppa:webupd8team/java && \
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
     apt-get -y update && \
     apt-get -y -q dist-upgrade && \
     apt-get -y -q upgrade && \
     apt-get -y -q install \
         git \
-        google-chrome-beta \
-		mc \
+        mc \
         lxterminal \
         maven && \
     apt-get clean && \
@@ -36,7 +33,7 @@ RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true 
         oracle-java8-set-default && \
     apt-get clean && \
     update-java-alternatives -s java-8-oracle
-	
+
 # Install scala
 RUN apt-get install -y libjansi-java
 RUN wget -q $SCALA_DEBPATH
@@ -60,7 +57,7 @@ RUN echo 'Creating user: dev' && \
     sudo chmod 0440 /etc/sudoers.d/dev && \
     sudo chown dev:dev -R /home/dev && \
     sudo chown root:root /usr/bin/sudo && \
-chmod 4755 /usr/bin/sudo 
+    chmod 4755 /usr/bin/sudo 
   
 
 # Install IntelliJ IDEA
