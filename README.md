@@ -33,7 +33,7 @@ Synereo backend development and testing environment (typically from Windows/MacO
    
 ####3. build.sbt
 
-   defines the aggregation build for Synereo's backend projects (Gloseval, AgentServises, SpetialK).
+   defines the aggregation build for Synereo's backend projects (GlosEval, AgentServises, SpecialK).
     
    See next section for the usage.
 
