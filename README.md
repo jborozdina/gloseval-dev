@@ -72,7 +72,7 @@ Synereo backend development and testing environment (typically from Windows/MacO
       - copy docker-compose.yml file to your host machine and change it with setting DISPLAY variable to your X client ip
       - open a docker console here and run the ``` docker-compose up``` command. This will pull the images for IDE and MongoDB and start the docker containers. As a result of successfull containers' start, the X terminal window will open.
       
-   5. Build Synereo backend projects with IntelliJ IDEA
+   5. Build Synereo backend projects with IntelliJ IDEA:
     
      - in the X terminal window of the IDE docker container first clone gloseval-dev project from Github to the current dirrectory (/home/dev). Enter into /gloseval-dev directory, move /lib folder, /project folder and build.sbt file to the /home/dev directory, return to /home/dev and remove /gloseval-dev folder.
      - clone GlosEval, AgentServices and SpecialK projects from Github to /home/dev directory
